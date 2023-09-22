@@ -19,7 +19,6 @@ function create({ closePopup, createActivity }) {
       [name]: value,
     }));
   };
-  console.log(data);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();

@@ -8,10 +8,12 @@ import EmptyPage from 'components/404Page';
 import EmptyImage from 'assets/todo-empty-state.png';
 import Navigation from './navigation';
 import Row from './row';
+import Create from './create';
 
 function DetailPage() {
   const [items, setItems] = useState({ error: false, data: [] });
   const { id } = useParams();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const getItemsHandler = async (id) => {
     try {
@@ -47,10 +49,18 @@ function DetailPage() {
     }
   }, [id]);
 
+  const openPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <div className="mx-20 mt-10">
       <div>
-        <Navigation title={items && items.data && items.data.title && items.data.title} updateTitle={updateTitle} />
+        <Navigation title={items && items.data && items.data.title && items.data.title} updateTitle={updateTitle} openPopup={openPopup} />
       </div>
       <div>
         {
@@ -67,6 +77,9 @@ function DetailPage() {
             )
         }
       </div>
+      {
+        isPopupOpen && (<Create closePopup={closePopup} />)
+      }
     </div>
   );
 }

@@ -9,6 +9,16 @@
         "sourceType": "module"
     },
     "rules": {
-        "linebreak-style": 0
+        "linebreak-style": 0,
+        "react/no-array-index-key": 0,
+        "no-console": "off",
+        "no-alert": "off"
+    },
+    "settings": {
+        "import/resolver": {
+          "node": {
+            "paths": ["src"]
+          }
+        }
     }
 }

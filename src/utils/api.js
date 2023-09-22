@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-else-return */
 /* eslint-disable import/prefer-default-export */
 const BASE_URL = 'https://todo.api.devcode.gethired.id';
@@ -40,7 +41,7 @@ async function createActivity({ title, email, comment }) {
   const responseJson = await response.json();
 
   if (!responseJson) {
-    alert('not found');
+    alert('failed to create data');
     return { error: true };
   }
 
@@ -87,10 +88,52 @@ async function updateActivity({ id, title }) {
   }
 }
 
+async function createItem({
+  title, activity_group_id, is_active = 0, priority,
+}) {
+  const response = await fetch(`${BASE_URL}/todo-items`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title, activity_group_id, is_active, priority,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!responseJson) {
+    alert('failed to create data');
+    return { error: true };
+  }
+
+  return { error: false };
+}
+
+async function deleteItem(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/todo-items/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.status === 200) {
+      return { error: false };
+    } else {
+      return { error: true };
+    }
+  } catch (error) {
+    console.error('Error while deleting activity:', error);
+    return { error: true };
+  }
+}
+
 export {
   getActivityGroups,
   getActivityGroupsById,
   createActivity,
   deleteActivity,
   updateActivity,
+  createItem,
+  deleteItem,
 };

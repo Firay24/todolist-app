@@ -1,8 +1,12 @@
+/* eslint-disable no-restricted-globals */
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable max-len */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { getActivityGroupsById, updateActivity } from 'utils/api';
+import {
+  getActivityGroupsById, updateActivity, createItem, deleteItem,
+} from 'utils/api';
 import { useParams } from 'react-router-dom';
 import EmptyPage from 'components/404Page';
 import EmptyImage from 'assets/todo-empty-state.png';
@@ -43,11 +47,38 @@ function DetailPage() {
     }
   };
 
+  const deleteItemHandler = async (id) => {
+    try {
+      if (confirm('apakah anda yakin menghapusnya?')) {
+        const { error } = await deleteItem(id);
+        if (!error) {
+          window.location.reload();
+        }
+      }
+    } catch (error) {
+      alert('Failed to delete activity');
+    }
+  };
+
+  async function onCreateItems(act) {
+    try {
+      const { error } = await createItem(act);
+      if (!error) {
+        setIsPopupOpen(false);
+        window.location.reload();
+      } else {
+        alert('cannot create items');
+      }
+    } catch (error) {
+      console.log('Error while register in', error);
+    }
+  }
+
   useEffect(() => {
     if (id) {
       getItemsHandler(id);
     }
-  }, [id]);
+  }, [id, isPopupOpen]);
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -62,13 +93,13 @@ function DetailPage() {
       <div>
         <Navigation title={items && items.data && items.data.title && items.data.title} updateTitle={updateTitle} openPopup={openPopup} />
       </div>
-      <div>
+      <div className="mt-10">
         {
           items !== undefined && items.data !== undefined
           && items.data.todo_items !== undefined && items.data.todo_items.length > 0 ? (
               items !== undefined && items.data !== undefined
               && items.data.todo_items !== undefined && items.data.todo_items.map((item, index) => (
-                <Row key={index} {...item} />
+                <Row key={index} {...item} deleteItemHandler={deleteItemHandler} />
               ))
             ) : (
               <div>
@@ -78,7 +109,7 @@ function DetailPage() {
         }
       </div>
       {
-        isPopupOpen && (<Create closePopup={closePopup} />)
+        isPopupOpen && (<Create createTodolist={onCreateItems} closePopup={closePopup} />)
       }
     </div>
   );

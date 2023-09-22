@@ -15,7 +15,7 @@ function create({ closePopup, createTodolist }) {
   const [itemList, setItemList] = useState({
     title: '',
     activity_group_id: '',
-    is_active: 0,
+    is_active: '',
     priority: '',
   });
 
@@ -35,6 +35,10 @@ function create({ closePopup, createTodolist }) {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
+    setItemList((prevItem) => ({
+      ...prevItem,
+      is_active: 0,
+    }));
     createTodolist(itemList);
   };
 

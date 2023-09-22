@@ -53,7 +53,7 @@ function Dashboard() {
     setIsPopupOpen(false);
   };
 
-  async function onRegisterHandler(act) {
+  async function onCreateActivity(act) {
     try {
       const { error } = await createActivity(act);
       if (!error) {
@@ -94,7 +94,7 @@ function Dashboard() {
         )
       }
       {
-        isPopupOpen && (<Create createActivity={onRegisterHandler} closePopup={closePopup} />)
+        isPopupOpen && (<Create createActivity={onCreateActivity} closePopup={closePopup} />)
       }
     </div>
   );

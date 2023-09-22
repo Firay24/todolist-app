@@ -25,7 +25,29 @@ async function getActivityGroupsById(id) {
   return { Error: false, data: responseJson };
 }
 
+async function createActivity({ title, email, comment }) {
+  const response = await fetch(`${BASE_URL}/activity-groups`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      title, email, comment,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!responseJson) {
+    alert('not found');
+    return { error: true };
+  }
+
+  return { error: false };
+}
+
 export {
   getActivityGroups,
   getActivityGroupsById,
+  createActivity,
 };

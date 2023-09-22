@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -6,7 +7,13 @@ import DeleteButton from 'components/button';
 import { Link } from 'react-router-dom';
 import ParseDateFunc from 'utils/parseDate';
 
-function Items({ id, title, created_at }) {
+function Items({
+  id, title, created_at, deleteActivityHandler,
+}) {
+  const handleDelete = (id) => {
+    deleteActivityHandler(id);
+  };
+
   return (
     <div className="flex flex-col cursor-default mt-10 justify-between rounded-md p-4 bg-white min-w-fit w-1/5 max-w-xs aspect-square drop-shadow-md">
       <div>
@@ -16,7 +23,7 @@ function Items({ id, title, created_at }) {
       </div>
       <div className="flex items-center justify-between text-gray-400 text-xs font-medium">
         <p>{ ParseDateFunc(created_at) }</p>
-        <DeleteButton onDelete />
+        <DeleteButton onDelete onHandler={() => handleDelete(id)} />
       </div>
     </div>
   );

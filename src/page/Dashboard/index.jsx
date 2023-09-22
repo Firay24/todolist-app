@@ -1,9 +1,10 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from 'react';
-import { getActivityGroups, createActivity } from 'utils/api';
+import { getActivityGroups, createActivity, deleteActivity } from 'utils/api';
 import Button from 'components/button';
 import EmptyPage from 'components/404Page';
 import EmptyImage from 'assets/activity-empty-state.png';
@@ -23,13 +24,26 @@ function Dashboard() {
     }
   };
 
+  const deleteActivityHandler = async (id) => {
+    try {
+      if (confirm('Apakah anda yakin menghapusnya?')) {
+        const { error } = await deleteActivity(id);
+        if (!error) {
+          getActivityHandler();
+        }
+      }
+    } catch (error) {
+      alert('Failed to delete activity');
+    }
+  };
+
   useEffect(() => {
     getActivityHandler();
   }, []);
 
   useEffect(() => {
     getActivityHandler();
-  }, [isPopupOpen]);
+  }, [isPopupOpen, activities]);
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -71,7 +85,7 @@ function Dashboard() {
           <div className="relative z-0 flex flex-wrap justify-between gap-x-2">
             {
               activities.data.map((activity, index) => (
-                <Item key={index} {...activity} />
+                <Item key={index} {...activity} deleteActivityHandler={deleteActivityHandler} />
               ))
             }
           </div>

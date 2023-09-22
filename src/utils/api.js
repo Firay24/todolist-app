@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable import/prefer-default-export */
 const BASE_URL = 'https://todo.api.devcode.gethired.id';
 
@@ -46,8 +47,26 @@ async function createActivity({ title, email, comment }) {
   return { error: false };
 }
 
+async function deleteActivity(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/activity-groups/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.status === 200) {
+      return { error: false };
+    } else {
+      return { error: true };
+    }
+  } catch (error) {
+    console.error('Error while deleting activity:', error);
+    return { error: true };
+  }
+}
+
 export {
   getActivityGroups,
   getActivityGroupsById,
   createActivity,
+  deleteActivity,
 };

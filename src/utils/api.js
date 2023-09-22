@@ -13,9 +13,9 @@ async function getActivityGroups() {
   return { error: false, data: responseJson.data };
 }
 
-async function getActivityGroupsById({ id }) {
+async function getActivityGroupsById(id) {
   const response = await fetch(`${BASE_URL}/activity-groups/${id}`);
-  const responseJson = response.json();
+  const responseJson = await response.json();
 
   if (!responseJson) {
     alert('not found');

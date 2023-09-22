@@ -7,7 +7,7 @@ function navigation() {
     <div className="flex justify-between">
       <div className="flex items-center gap-x-2 text-xl">
         <div>
-          <Button onBack />
+          <Button onLink onBack path="/" />
         </div>
         <div>
           <h3 className="font-semibold cursor-default">New Activity</h3>

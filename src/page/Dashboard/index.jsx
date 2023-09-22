@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { getActivityGroups } from 'utils/api';
 import Button from 'components/button';
+import EmptyPage from 'components/404Page';
+import EmptyImage from 'assets/activity-empty-state.png';
 import Item from './item';
-import EmptyPage from './emptyPage';
 
 function Dashboard() {
   const [activities, setActivity] = useState({ error: false, data: [] });
@@ -35,7 +36,7 @@ function Dashboard() {
         </div>
       </div>
       {
-        activities.data ? (
+        activities.data.length > 0 ? (
           <div className="relative z-0 flex flex-wrap justify-between gap-x-2">
             {
               activities.data.map((activity, index) => (
@@ -45,7 +46,7 @@ function Dashboard() {
           </div>
         ) : (
           <div>
-            <EmptyPage />
+            <EmptyPage path={EmptyImage} />
           </div>
         )
       }

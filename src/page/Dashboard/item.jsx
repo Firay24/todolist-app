@@ -4,6 +4,7 @@
 import React from 'react';
 import DeleteButton from 'components/button';
 import { Link } from 'react-router-dom';
+import ParseDateFunc from 'utils/parseDate';
 
 function Items({ id, title, created_at }) {
   return (
@@ -14,7 +15,7 @@ function Items({ id, title, created_at }) {
         </h4>
       </div>
       <div className="flex items-center justify-between text-gray-400 text-xs font-medium">
-        <p>{ created_at }</p>
+        <p>{ ParseDateFunc(created_at) }</p>
         <DeleteButton onDelete />
       </div>
     </div>

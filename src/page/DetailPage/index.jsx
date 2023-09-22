@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
@@ -16,7 +17,9 @@ function DetailPage() {
     try {
       if (id) { // Periksa apakah id telah didefinisikan
         const result = await getActivityGroupsById(id);
-        setItems(result);
+        if (result.data !== undefined && result.data !== false) {
+          setItems(result);
+        }
       }
     } catch (error) {
       setItems({ error: true, data: [] });
@@ -47,7 +50,7 @@ function DetailPage() {
   return (
     <div className="mx-20 mt-10">
       <div>
-        <Navigation title={items && items.data && items.data.title} updateTitle={updateTitle} />
+        <Navigation title={items && items.data && items.data.title && items.data.title} updateTitle={updateTitle} />
       </div>
       <div>
         {

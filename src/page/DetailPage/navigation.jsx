@@ -8,11 +8,14 @@ function navigation({ title, updateTitle }) {
 
   const handleEditClick = () => {
     setIsEditing(true);
+    setActivity(title);
   };
 
   const handleSave = async () => {
-    updateTitle(activity);
-    setIsEditing(false);
+    if (activity !== undefined || activity !== false) {
+      updateTitle(activity);
+      setIsEditing(false);
+    }
   };
 
   return (
@@ -25,7 +28,7 @@ function navigation({ title, updateTitle }) {
           {isEditing ? (
             <input
               type="text"
-              value={activity && activity}
+              value={activity !== undefined && activity !== false && activity}
               onChange={(e) => setActivity(e.target.value)}
               className="font-semibold cursor-default border border-gray-300 px-2 py-1 rounded"
             />

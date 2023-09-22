@@ -36,16 +36,17 @@ function DetailPage() {
       </div>
       <div>
         {
-          items.data.length > 0 ? (
-            items !== undefined && items.data !== undefined
+          items !== undefined && items.data !== undefined
+          && items.data.todo_items !== undefined && items.data.todo_items.length > 0 ? (
+              items !== undefined && items.data !== undefined
               && items.data.todo_items !== undefined && items.data.todo_items.map((item, index) => (
                 <Row key={index} {...item} />
-            ))
-          ) : (
-            <div>
-              <EmptyPage path={EmptyImage} />
-            </div>
-          )
+              ))
+            ) : (
+              <div>
+                <EmptyPage path={EmptyImage} />
+              </div>
+            )
         }
       </div>
     </div>

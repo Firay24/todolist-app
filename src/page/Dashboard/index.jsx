@@ -53,8 +53,6 @@ function Dashboard() {
     setIsPopupOpen(false);
   };
 
-  console.log(isPopupOpen);
-
   async function onRegisterHandler(act) {
     try {
       const { error } = await createActivity(act);

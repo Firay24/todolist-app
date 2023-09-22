@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { getActivityGroupsById } from 'utils/api';
+import { getActivityGroupsById, updateActivity } from 'utils/api';
 import { useParams } from 'react-router-dom';
 import EmptyPage from 'components/404Page';
 import EmptyImage from 'assets/todo-empty-state.png';
@@ -23,6 +23,21 @@ function DetailPage() {
     }
   };
 
+  const updateTitle = async (title) => {
+    try {
+      if (id) {
+        const { error } = await updateActivity({ id, title });
+        if (!error) {
+          getItemsHandler(id);
+        } else {
+          alert('Cannot update');
+        }
+      }
+    } catch (error) {
+      alert('Cannot update');
+    }
+  };
+
   useEffect(() => {
     if (id) {
       getItemsHandler(id);
@@ -32,7 +47,7 @@ function DetailPage() {
   return (
     <div className="mx-20 mt-10">
       <div>
-        <Navigation />
+        <Navigation title={items && items.data && items.data.title} updateTitle={updateTitle} />
       </div>
       <div>
         {

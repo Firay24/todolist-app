@@ -1,8 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'components/button';
 
-function navigation() {
+function navigation({ title, updateTitle }) {
+  const [activity, setActivity] = useState(title);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = async () => {
+    updateTitle(activity);
+    setIsEditing(false);
+  };
+
   return (
     <div className="flex justify-between">
       <div className="flex items-center gap-x-2 text-xl">
@@ -10,10 +22,25 @@ function navigation() {
           <Button onLink onBack path="/" />
         </div>
         <div>
-          <h3 className="font-semibold cursor-default">New Activity</h3>
+          {isEditing ? (
+            <input
+              type="text"
+              value={activity && activity}
+              onChange={(e) => setActivity(e.target.value)}
+              className="font-semibold cursor-default border border-gray-300 px-2 py-1 rounded"
+            />
+          ) : (
+            <h3 className="font-semibold cursor-default">{ title }</h3>
+          )}
         </div>
         <div>
-          <Button onEdit />
+          {
+            isEditing ? (
+              <Button onEdit onHandler={handleSave} />
+            ) : (
+              <Button onEdit onHandler={handleEditClick} />
+            )
+          }
         </div>
       </div>
       <div className="flex items-center gap-x-3 text-base text-gray-500">

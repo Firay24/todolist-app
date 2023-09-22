@@ -64,9 +64,33 @@ async function deleteActivity(id) {
   }
 }
 
+async function updateActivity({ id, title }) {
+  try {
+    const response = await fetch(`${BASE_URL}/activity-groups/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title,
+      }),
+    });
+
+    if (response.status === 200) {
+      return { error: false };
+    } else {
+      return { error: true };
+    }
+  } catch (error) {
+    console.error('Error while update activity:', error);
+    return { error: true };
+  }
+}
+
 export {
   getActivityGroups,
   getActivityGroupsById,
   createActivity,
   deleteActivity,
+  updateActivity,
 };

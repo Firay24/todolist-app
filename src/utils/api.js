@@ -128,6 +128,29 @@ async function deleteItem(id) {
   }
 }
 
+async function updateItem({ id, title, is_active }) {
+  try {
+    const response = await fetch(`${BASE_URL}/todo-items/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id, title, is_active,
+      }),
+    });
+
+    if (response.status === 200) {
+      return { error: false };
+    } else {
+      return { error: true };
+    }
+  } catch (error) {
+    console.error('Error while update activity:', error);
+    return { error: true };
+  }
+}
+
 export {
   getActivityGroups,
   getActivityGroupsById,
@@ -136,4 +159,5 @@ export {
   updateActivity,
   createItem,
   deleteItem,
+  updateItem,
 };

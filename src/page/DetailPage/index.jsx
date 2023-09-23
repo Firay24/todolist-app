@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable max-len */
@@ -5,7 +6,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
 import {
-  getActivityGroupsById, updateActivity, createItem, deleteItem,
+  getActivityGroupsById, updateActivity, createItem, deleteItem, updateItem,
 } from 'utils/api';
 import { useParams } from 'react-router-dom';
 import EmptyPage from 'components/404Page';
@@ -32,15 +33,35 @@ function DetailPage() {
     }
   };
 
-  const updateTitle = async (title) => {
+  const updateTitle = async (newTitle) => {
     try {
       if (id) {
-        const { error } = await updateActivity({ id, title });
+        const { error } = await updateActivity({ id, title: newTitle });
         if (!error) {
-          getItemsHandler(id);
+          // Perbarui judul di state items
+          setItems((prevItems) => ({
+            ...prevItems,
+            data: {
+              ...prevItems.data,
+              title: newTitle, // Atur judul baru di sini
+            },
+          }));
         } else {
           alert('Cannot update');
         }
+      }
+    } catch (error) {
+      alert('Cannot update');
+    }
+  };
+
+  const updateItemHandler = async ({ id, title, is_active }) => {
+    try {
+      const { error } = await updateItem({ id, title, is_active });
+      if (!error) {
+        getItemsHandler(items.data.id);
+      } else {
+        alert('cannot create items');
       }
     } catch (error) {
       alert('Cannot update');
@@ -99,7 +120,7 @@ function DetailPage() {
           && items.data.todo_items !== undefined && items.data.todo_items.length > 0 ? (
               items !== undefined && items.data !== undefined
               && items.data.todo_items !== undefined && items.data.todo_items.map((item, index) => (
-                <Row key={index} {...item} deleteItemHandler={deleteItemHandler} />
+                <Row key={index} {...item} deleteItemHandler={deleteItemHandler} updateItemHandler={updateItemHandler} />
               ))
             ) : (
               <div>

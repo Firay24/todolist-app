@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable camelcase */
@@ -15,16 +16,30 @@ const priorityClasses = {
 };
 
 function Row({
-  id, title, priority, is_active, deleteItemHandler,
+  id, title, priority, is_active, deleteItemHandler, updateItemHandler,
 }) {
   const [isChecked, setIsChecked] = useState(is_active);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(title); // Menyimpan judul yang sedang diedit
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
+    // Memanggil fungsi updateItemHandler untuk memperbarui is_active ketika checkbox diklik
+    updateItemHandler({ id, title, is_active: isChecked ? 0 : 1 });
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = () => {
     deleteItemHandler(id);
+  };
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    // Memanggil fungsi updateItemHandler untuk menyimpan perubahan judul
+    updateItemHandler({ id, title: editedTitle, is_active });
+    setIsEditing(false);
   };
 
   return (
@@ -37,14 +52,29 @@ function Row({
           <GoDotFill />
         </div>
         <div>
-          <p className={`font-medium text-sm cursor-default ${isChecked ? 'line-through' : null}`}>{ title }</p>
+          {isEditing ? (
+            <input
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              className="font-medium text-sm"
+            />
+          ) : (
+            <p className={`font-medium text-sm cursor-default ${isChecked ? 'line-through' : ''}`}>
+              {editedTitle}
+            </p>
+          )}
         </div>
         <div>
-          <Button onEdit />
+          {isEditing ? (
+            <Button onEdit onHandler={handleSave} />
+          ) : (
+            <Button onEdit onHandler={handleEdit} />
+          )}
         </div>
       </div>
       <div>
-        <Button onDelete onHandler={() => handleDelete(id)} />
+        <Button onDelete onHandler={handleDelete} />
       </div>
     </div>
   );

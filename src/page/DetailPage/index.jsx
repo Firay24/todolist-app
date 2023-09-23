@@ -22,7 +22,7 @@ function DetailPage() {
 
   const getItemsHandler = async (id) => {
     try {
-      if (id) { // Periksa apakah id telah didefinisikan
+      if (id) {
         const result = await getActivityGroupsById(id);
         if (result.data !== undefined && result.data !== false) {
           setItems(result);
@@ -38,12 +38,11 @@ function DetailPage() {
       if (id) {
         const { error } = await updateActivity({ id, title: newTitle });
         if (!error) {
-          // Perbarui judul di state items
           setItems((prevItems) => ({
             ...prevItems,
             data: {
               ...prevItems.data,
-              title: newTitle, // Atur judul baru di sini
+              title: newTitle,
             },
           }));
         } else {

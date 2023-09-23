@@ -20,11 +20,10 @@ function Row({
 }) {
   const [isChecked, setIsChecked] = useState(is_active);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(title); // Menyimpan judul yang sedang diedit
+  const [editedTitle, setEditedTitle] = useState(title);
 
   const handleCheckBox = () => {
     setIsChecked(!isChecked);
-    // Memanggil fungsi updateItemHandler untuk memperbarui is_active ketika checkbox diklik
     updateItemHandler({ id, title, is_active: isChecked ? 0 : 1 });
   };
 
@@ -37,7 +36,6 @@ function Row({
   };
 
   const handleSave = () => {
-    // Memanggil fungsi updateItemHandler untuk menyimpan perubahan judul
     updateItemHandler({ id, title: editedTitle, is_active });
     setIsEditing(false);
   };

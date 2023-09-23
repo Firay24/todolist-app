@@ -55,7 +55,6 @@ function CustomDropdown({ onSelect }) {
         </button>
       </div>
 
-      {/* Dropdown menu */}
       {isOpen && (
         <div className="z-10 absolute mt-2 origin-top-right bg-white border border-gray-300 rounded-md shadow-lg outline-none" aria-labelledby="options-menu">
           <div className="py-1">

@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-return-assign */
 /* eslint-disable camelcase */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/jsx-no-bind */
@@ -17,8 +19,9 @@ import Create from './create';
 
 function DetailPage() {
   const [items, setItems] = useState({ error: false, data: [] });
-  const { id } = useParams();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [filterOption, setFilterOption] = useState(null);
+  const { id } = useParams();
 
   const getItemsHandler = async (id) => {
     try {
@@ -108,25 +111,77 @@ function DetailPage() {
     setIsPopupOpen(false);
   };
 
+  const handleDropdownFilter = (selectedOption) => {
+    setFilterOption(selectedOption);
+  };
+
+  const sortByNameAZ = () => {
+    const sortedData = [...items.data.todo_items].sort((a, b) => a.title.localeCompare(b.title));
+    setItems((prevItems) => ({
+      ...prevItems,
+      data: {
+        ...prevItems.data,
+        todo_items: sortedData,
+      },
+    }));
+  };
+
+  const sortByNameZA = () => {
+    const sortedData = [...items.data.todo_items].sort((a, b) => b.title.localeCompare(a.title));
+    setItems((prevItems) => ({
+      ...prevItems,
+      data: {
+        ...prevItems.data,
+        todo_items: sortedData,
+      },
+    }));
+  };
+
+  const sortUnfinished = () => {
+    const sortedData = [...items.data.todo_items].sort((a, b) => a.is_active - b.is_active || a.title.localeCompare(b.title));
+    setItems((prevItems) => ({
+      ...prevItems,
+      data: {
+        ...prevItems.data,
+        todo_items: sortedData,
+      },
+    }));
+  };
+
+  const filtering = () => {
+    if (filterOption === 'A-Z') {
+      sortByNameAZ();
+    } else if (filterOption === 'Z-A') {
+      sortByNameZA();
+    } else if (filterOption === 'Belum Selesai') {
+      sortUnfinished();
+    }
+  };
+
+  useEffect(() => {
+    filtering();
+  }, [filterOption]);
+
   return (
     <div className="mx-20 mt-10">
       <div>
-        <Navigation title={items && items.data && items.data.title && items.data.title} updateTitle={updateTitle} openPopup={openPopup} />
+        <Navigation
+          title={items && items.data && items.data.title && items.data.title}
+          updateTitle={updateTitle}
+          openPopup={openPopup}
+          onSelect={handleDropdownFilter}
+        />
       </div>
       <div className="mt-10">
-        {
-          items !== undefined && items.data !== undefined
-          && items.data.todo_items !== undefined && items.data.todo_items.length > 0 ? (
-              items !== undefined && items.data !== undefined
-              && items.data.todo_items !== undefined && items.data.todo_items.map((item, index) => (
-                <Row key={index} {...item} deleteItemHandler={deleteItemHandler} updateItemHandler={updateItemHandler} />
-              ))
-            ) : (
-              <div>
-                <EmptyPage path={EmptyImage} />
-              </div>
-            )
-        }
+        {items?.data?.todo_items?.length > 0 ? (
+          items.data.todo_items.map((item, index) => (
+            <Row key={index} {...item} deleteItemHandler={deleteItemHandler} updateItemHandler={updateItemHandler} />
+          ))
+        ) : (
+          <div>
+            <EmptyPage path={EmptyImage} />
+          </div>
+        )}
       </div>
       {
         isPopupOpen && (<Create createTodolist={onCreateItems} closePopup={closePopup} />)

@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable camelcase */
 /* eslint-disable import/no-extraneous-dependencies */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoDotFill } from 'react-icons/go';
 import Button from 'components/button';
 
@@ -39,6 +39,14 @@ function Row({
     updateItemHandler({ id, title: editedTitle, is_active });
     setIsEditing(false);
   };
+
+  useEffect(() => {
+    const updateFilter = () => {
+      setEditedTitle(title);
+      setIsChecked(is_active);
+    };
+    updateFilter();
+  }, [title, is_active]);
 
   return (
     <div className="flex items-center justify-between bg-white drop-shadow-md mt-3 p-4 rounded-md">

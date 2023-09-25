@@ -1,8 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import React, { useState } from 'react';
 import Button from 'components/button';
+import FilterButton from './filter';
 
-function navigation({ title, updateTitle, openPopup }) {
+function navigation({
+  title, updateTitle, openPopup, onSelect,
+}) {
   const [activity, setActivity] = useState(title);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -16,6 +19,10 @@ function navigation({ title, updateTitle, openPopup }) {
       updateTitle(activity);
       setIsEditing(false);
     }
+  };
+
+  const handleDropdownSelect = (selectedOption) => {
+    onSelect(selectedOption);
   };
 
   return (
@@ -47,7 +54,7 @@ function navigation({ title, updateTitle, openPopup }) {
         </div>
       </div>
       <div className="flex items-center gap-x-3 text-base text-gray-500">
-        <Button onSort />
+        <FilterButton onSelect={handleDropdownSelect} />
         <Button onButton onAdd text="Tambah" onHandler={openPopup} />
       </div>
     </div>

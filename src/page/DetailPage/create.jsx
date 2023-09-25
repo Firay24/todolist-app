@@ -4,7 +4,7 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
 import React, { useEffect, useState } from 'react';
-import { AiFillCloseCircle } from 'react-icons/ai';
+import { AiOutlineClose } from 'react-icons/ai';
 import Button from 'components/button';
 import { useParams } from 'react-router-dom';
 import CustomDropdown from './dropdown';
@@ -54,20 +54,22 @@ function create({ closePopup, createTodolist }) {
       priority: selectedOption, // Menggunakan nilai option dari CustomDropdown
     }));
   };
-  console.log(itemList);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-40">
-      <div className="bg-white p-4 rounded-lg shadow-lg">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-3/4 relative">
         <div className="flex items-center justify-between my-2">
-          <h2 className="flex text-xl font-bold">Tambah List Item</h2>
-          <button className="text-gray-400 hover:text-gray-500 text-lg" onClick={closePopup}>
-            <AiFillCloseCircle />
+          <h2 className="flex text-xl font-bold mb-">Tambah List Item</h2>
+          <button className="text-gray-400 hover:text-gray-500 text-xl" onClick={closePopup}>
+            <AiOutlineClose />
           </button>
         </div>
+        <div className="mt-5 mb-12">
+          <div className="border-t border-1 border-gray-300 w-full" style={{ position: 'absolute', left: 0, right: 0 }} />
+        </div>
         <form onSubmit={onSubmitHandler}>
-          <div>
-            <label htmlFor="title">Nama List Item</label>
+          <div className="flex flex-col gap-y-2 mb-4">
+            <label htmlFor="title" className="text-sm font-semibold">NAMA LIST ITEM</label>
             <input
               name="title"
               id="title"
@@ -77,9 +79,12 @@ function create({ closePopup, createTodolist }) {
               className="w-full border rounded p-2 mb-2"
             />
           </div>
-          <div className="flex flex-col">
-            <label>Priority</label>
+          <div className="flex flex-col gap-y-2 mb-8">
+            <label className="text-sm font-semibold">Priority</label>
             <CustomDropdown onSelect={handleDropdownSelect} />
+          </div>
+          <div className="mt-5 mb-12">
+            <div className="border-t border-1 border-gray-300 w-full" style={{ position: 'absolute', left: 0, right: 0 }} />
           </div>
           <div className="mt-5 flex justify-end">
             <Button onButton text="simpan" />
